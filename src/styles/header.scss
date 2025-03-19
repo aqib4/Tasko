@@ -1,0 +1,225 @@
+// header.scss
+$primary-color: #3b82f6;
+$text-color: #4b5563;
+$shadow-color: rgba(0, 0, 0, 0.1);
+$transition-speed: 0.3s;
+$sidebar-width: 280px;
+$header-height: 64px;
+
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: white;
+  box-shadow: 0 2px 10px $shadow-color;
+  z-index: 50;
+
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: $header-height;
+    padding: 0 1rem;
+
+    @media (min-width: 768px) {
+      padding: 0 2rem;
+    }
+  }
+
+  &__logo-container {
+    display: flex;
+    align-items: center;
+  }
+
+  &__logo {
+    height: 32px;
+    width: auto;
+  }
+
+  &__nav-desktop {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: block;
+    }
+  }
+
+  &__nav-list {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__nav-item {
+    margin: 0;
+  }
+
+  &__nav-link {
+    color: $text-color;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    transition: color $transition-speed ease;
+
+    &:hover {
+      color: darken($text-color, 20%);
+    }
+
+    &--primary {
+      background-color: $primary-color;
+      color: white;
+      padding: 0.5rem 1rem;
+      transition: background-color $transition-speed ease;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+        color: white;
+      }
+    }
+  }
+
+  &__menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: $text-color;
+    cursor: pointer;
+    padding: 0.25rem;
+    z-index: 60;
+
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
+}
+
+// Sidebar Styles
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -$sidebar-width; // Start offscreen
+  width: $sidebar-width;
+  height: 100vh;
+  background-color: white;
+  box-shadow: -2px 0 10px $shadow-color;
+  z-index: 100;
+  transition: right $transition-speed ease;
+  overflow-y: auto;
+
+  &--open {
+    right: 0;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    height: $header-height;
+  }
+
+  &__logo {
+    height: 28px;
+    width: auto;
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: $text-color;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  &__nav {
+    padding: 1rem 0;
+  }
+
+  &__nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__nav-item {
+    margin: 0;
+
+    &--divider {
+      margin: 1rem 0;
+    }
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 0 1rem;
+  }
+
+  &__nav-link {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: $text-color;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color $transition-speed ease;
+
+    &:hover {
+      background-color: #f3f4f6;
+    }
+
+    &--primary {
+      color: $primary-color;
+      font-weight: 500;
+
+      &:hover {
+        color: darken($primary-color, 10%);
+      }
+    }
+  }
+}
+
+// Overlay for sidebar
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity $transition-speed ease;
+
+  &--active {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// Add this class to body when sidebar is open
+.no-scroll {
+  overflow: hidden;
+}
