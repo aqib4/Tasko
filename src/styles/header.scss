@@ -1,17 +1,18 @@
 // header.scss
-$primary-color: #3b82f6;
-$text-color: #4b5563;
-$shadow-color: rgba(0, 0, 0, 0.1);
-$transition-speed: 0.3s;
+@use 'sass:color';
+@use './styles.scss' as *;
+
+// Header specific variables
 $sidebar-width: 280px;
 $header-height: 64px;
+$transition-speed: 0.3s; // Added transition speed variable
 
 .header {
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: white;
+  background-color: $card-background;
   box-shadow: 0 2px 10px $shadow-color;
   z-index: 50;
 
@@ -66,20 +67,20 @@ $header-height: 64px;
     font-weight: 500;
     padding: 0.5rem 0.75rem;
     border-radius: 0.25rem;
-    transition: color $transition-speed ease;
+    transition: color $transition;
 
     &:hover {
-      color: darken($text-color, 20%);
+      color: color.adjust($text-color, $lightness: -20%);
     }
 
     &--primary {
       background-color: $primary-color;
       color: white;
       padding: 0.5rem 1rem;
-      transition: background-color $transition-speed ease;
+      transition: background-color $transition;
 
       &:hover {
-        background-color: darken($primary-color, 10%);
+        background-color: color.adjust($primary-color, $lightness: -10%);
         color: white;
       }
     }
@@ -108,10 +109,10 @@ $header-height: 64px;
   right: -$sidebar-width; // Start offscreen
   width: $sidebar-width;
   height: 100vh;
-  background-color: white;
+  background-color: $card-background;
   box-shadow: -2px 0 10px $shadow-color;
   z-index: 100;
-  transition: right $transition-speed ease;
+  transition: right $transition;
   overflow-y: auto;
 
   &--open {
@@ -123,7 +124,7 @@ $header-height: 64px;
     align-items: center;
     justify-content: space-between;
     padding: 1rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid $border-color;
     height: $header-height;
   }
 
@@ -161,7 +162,7 @@ $header-height: 64px;
 
   &__divider {
     border: none;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid $border-color;
     margin: 0 1rem;
   }
 
@@ -171,10 +172,10 @@ $header-height: 64px;
     color: $text-color;
     text-decoration: none;
     font-size: 1rem;
-    transition: background-color $transition-speed ease;
+    transition: background-color $transition;
 
     &:hover {
-      background-color: #f3f4f6;
+      background-color: $background-color;
     }
 
     &--primary {
@@ -182,7 +183,7 @@ $header-height: 64px;
       font-weight: 500;
 
       &:hover {
-        color: darken($primary-color, 10%);
+        color: color.adjust($primary-color, $lightness: -10%);
       }
     }
   }
@@ -199,7 +200,7 @@ $header-height: 64px;
   z-index: 90;
   visibility: hidden;
   opacity: 0;
-  transition: opacity $transition-speed ease;
+  transition: opacity $transition;
 
   &--active {
     visibility: visible;

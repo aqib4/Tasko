@@ -1,0 +1,18 @@
+// todoList.scss
+@use 'sass:color';
+$primary-color: #4a6fa5;
+$secondary-color: #166088;
+$accent-color: #19b5fe;
+$background-color: #f7f9fc;
+$card-background: #ffffff;
+$text-color: #2d3748;
+$light-text: #718096;
+$border-color: #e2e8f0;
+$success-color: #48bb78;
+$warning-color: #ed8936;
+$danger-color: #e53e3e;
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+
+$shadow-color: rgba(0, 0, 0, 0.1);
