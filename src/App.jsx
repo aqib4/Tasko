@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/header.jsx'; // Ensure correct case
 import './App.css';
-import Landing from './components/landing.jsx'; // Ensure correct case
+import Landing from './pages/landing.jsx'; // Ensure correct case
 import Login from './pages/login.jsx'; // Ensure correct case
 import Signup from './pages/signup.jsx'; // Ensure correct case
 import TodoList from './pages/TodoList.jsx';

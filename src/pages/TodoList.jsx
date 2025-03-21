@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form, Field } from "formik";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,13 +8,10 @@ import {
   useDeleteTodoMutation, 
   useUpdateTodoMutation 
 } from "../redux/reducers/todo/todoThunk";
+import TodoItem from "../components/TodoItem"; // Import the new component
 import "../styles/todoList.scss";
 
 const TodoList = () => {
-  // State to track which todo is being edited
-  const [editingId, setEditingId] = useState(null);
-  const [editText, setEditText] = useState("");
-
   // With proper cache invalidation, we don't need refetch anymore
   const { data: todos = [], isLoading, error } = useGetTodosQuery();
   const [addTodo, { isLoading: isAdding }] = useAddTodoMutation();
@@ -39,12 +36,6 @@ const TodoList = () => {
     try {
       await updateTodo({ id, ...changes }).unwrap();
       toast.info("Task updated.");
-      
-      // Reset editing state if we were editing this todo
-      if (editingId === id) {
-        setEditingId(null);
-        setEditText("");
-      }
     } catch (error) {
       console.error("Error updating todo:", error);
       toast.error("Failed to update task.");
@@ -55,36 +46,9 @@ const TodoList = () => {
     try {
       await deleteTodo(id).unwrap();
       toast.warn("Task deleted.");
-      
-      // Reset editing state if we were editing this todo
-      if (editingId === id) {
-        setEditingId(null);
-        setEditText("");
-      }
     } catch (error) {
       console.error("Error deleting todo:", error);
       toast.error("Failed to delete task.");
-    }
-  };
-
-  // Function to enter edit mode for a todo
-  const startEditing = (todo) => {
-    setEditingId(todo.id || todo._id);
-    setEditText(todo.text);
-  };
-
-  // Function to cancel editing
-  const cancelEditing = () => {
-    setEditingId(null);
-    setEditText("");
-  };
-
-  // Function to save edited text
-  const saveEditedTodo = (id) => {
-    if (editText.trim() !== "") {
-      handleUpdateTodo(id, { text: editText });
-    } else {
-      toast.error("Task text cannot be empty!");
     }
   };
 
@@ -138,83 +102,16 @@ const TodoList = () => {
                 <p>No tasks yet. Add your first task above!</p>
               </div>
             ) : (
-              reversedTodos.map((todo) => {
-                const todoId = todo.id || todo._id;
-                const isEditing = editingId === todoId;
-                
-                return (
-                  <div 
-                    key={todoId} 
-                    className={`todo-item ${todo.completed ? "completed" : ""} ${isEditing ? "editing" : ""}`}
-                  >
-                    <div className="todo-content">
-                      {!isEditing && (
-                        <span 
-                          className="todo-checkbox" 
-                          onClick={() => handleUpdateTodo(todoId, { completed: !todo.completed })}
-                        >
-                          {todo.completed && <span className="checkmark">✓</span>}
-                        </span>
-                      )}
-                      
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          className="todo-edit-input"
-                          value={editText}
-                          onChange={(e) => setEditText(e.target.value)}
-                          autoFocus
-                        />
-                      ) : (
-                        <p className="todo-text">{todo.text}</p>
-                      )}
-                    </div>
-                    
-                    <div className="todo-actions">
-                      {isEditing ? (
-                        <>
-                          <button 
-                            onClick={() => saveEditedTodo(todoId)} 
-                            className="save-button"
-                            disabled={isUpdating}
-                          >
-                            Save
-                          </button>
-                          <button 
-                            onClick={cancelEditing} 
-                            className="cancel-button"
-                          >
-                            Cancel
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <button 
-                            onClick={() => startEditing(todo)} 
-                            className="edit-button"
-                          >
-                            Edit
-                          </button>
-                          <button 
-                            onClick={() => handleUpdateTodo(todoId, { completed: !todo.completed })} 
-                            className="status-button"
-                            disabled={isUpdating}
-                          >
-                            {todo.completed ? "Undo" : "Complete"}
-                          </button>
-                          <button 
-                            onClick={() => handleDeleteTodo(todoId)} 
-                            className="delete-button"
-                            disabled={isDeleting}
-                          >
-                            Delete
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                );
-              })
+              reversedTodos.map((todo) => (
+                <TodoItem
+                  key={todo.id || todo._id}
+                  todo={todo}
+                  onUpdate={handleUpdateTodo}
+                  onDelete={handleDeleteTodo}
+                  isUpdating={isUpdating}
+                  isDeleting={isDeleting}
+                />
+              ))
             )}
           </div>
         )}
